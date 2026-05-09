@@ -3,7 +3,6 @@
 **Fecha del informe**: sábado 2026-05-09 (refleja cierre del viernes 2026-05-08)
 **Fuente de datos**: lectura directa de gráficos semanales (StockCharts, timestamps 2026-05-09 08:51) + tablas de performance sectorial/industria 1W & 1M
 **Excluidos** (analizados por separado en Step 2 / us-market-analyst): SP500_BREADTH_PROXY_RSP_SPY_RATIO, US_UPTREND_STOCK_RATIO
-**Nota**: el script `fetch_market_close.py` devolvió HTTP 403 en esta sesión, por lo que todos los precios y niveles surgen exclusivamente de lectura visual de los charts adjuntos.
 
 ---
 

@@ -4,10 +4,6 @@
 **Categoría**: Estrategia semanal, acciones US, traders part-time
 **Idioma**: español rioplatense
 
-> **Nota sobre datos**: precios al **cierre del 5/8**. VIX/SPX/Dow/SPY/10Y/Gold spot **validados contra FMP /stable** tras la migración desde el endpoint v3 deprecado; NDX/QQQ/GLD/WTI/cobre/sectoriales siguen tomados de los gráficos semanales (FMP free plan los bloquea con HTTP 402 paid-only). **Breadth 200MA, Breadth 8MA y Uptrend Ratio son del CSV TraderMonty al 5/7** (la serie de Uptrend se actualiza con ~1 semana de rezago respecto al Breadth diario; **considerá esa diferencia cuando interpretes la divergencia precio vs amplitud**).
->
-> **Nota de continuidad**: el blog anterior disponible es del **2025-11-17** (~6 meses atrás). El régimen actual difiere fuertemente del de noviembre 2025 (entonces Breadth 53% / VIX 19,82 / Late Cycle defensivo; ahora ATH NDX/SPX con rally narrow). La regla de continuidad ±10-15% no aplica de forma estricta: este blog inaugura un ciclo nuevo de seguimiento. Los rangos de allocation que usamos esta semana ya respetan el cambio de régimen sin movimientos bruscos.
-
 ---
 
 ## Resumen 3 líneas
