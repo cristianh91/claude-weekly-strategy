@@ -13,7 +13,7 @@ Informes semanales de estrategia de trading — Acciones US.
 
 | Semana | Blog Estrategia | Reports |
 |--------|----------------|---------|
-| [2026-05-09](weeks/2026-05-09/) | Estrategia semanal | 5 informes |
+| [2026-05-10](weeks/2026-05-10/) | Estrategia semanal | 5 informes |
 
 ---
 
