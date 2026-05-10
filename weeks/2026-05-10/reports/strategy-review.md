@@ -1,124 +1,165 @@
-# Strategy Blog Review Report — Semana del 11 de mayo de 2026
+# Strategy Blog Review Report — 2026-05-10 (Re-baseline)
 
-**Review Date**: 10 de mayo de 2026 (domingo)
-**Blog Reviewed**: `blogs/2026-05-10-weekly-strategy.md` (303 líneas)
-**Reviewer**: strategy-reviewer (modo iterativo, 3 rondas)
-**Idioma**: español rioplatense
-
----
-
-## Veredicto Final: **PASS WITH NOTES**
-
-**Review Round**: 2/3 (Round 3 no requerido — sin findings HIGH ni MEDIUM bloqueantes en Round 2)
-
-**Previous Round Findings Fixed**: N/A (Round 1 sin findings HIGH; Round 2 verificó invariantes sin regresiones)
-
-**New Findings Round 2**: 0 HIGH / 1 MEDIUM / 2 LOW
+*Fecha de revisión*: 10 de mayo de 2026
+*Blog revisado*: `blogs/2026-05-10-weekly-strategy.md` (regenerado post re-baseline contra anchor publicado 5/4 28/19/17/36)
+*Reviewer*: strategy-reviewer (independiente)
+*Idioma*: español rioplatense
+*Modo*: iterativo 3 rondas con auto-fix HIGH severity
 
 ---
 
-## Resumen ejecutivo
+## Veredicto final: **PASS WITH NOTES** (post auto-fix Round 1)
 
-El blog del 11 de mayo de 2026 es de **calidad alta**. Todos los datos primarios (Breadth CSV local, Uptrend Ratio CSV local, precios FMP API) están reportados con precisión a la décima. Las 7 verificaciones independientes contra fuentes oficiales (BLS CPI/PPI, Census Retail, AMAT IR, Cisco IR, Fed May Calendar, Fed Blackout PDF) coinciden **exactamente** con el blog. Las conversiones JST/ART para los 7 eventos del chequeo nocturno son correctas (verificadas con `zoneinfo`). Los 4 invariantes de allocation suman 100% en todos los escenarios (Base/Risk-On/Caution/Stress). El disclaimer cumple los 5 elementos de Rule 20. La continuidad ±10-15pt vs baseline 5/9 mid (44/20/16/25) está dentro del rango (-4/+2/0/-3pt).
+### Resumen ejecutivo
 
-**No se detectaron findings HIGH severity ni se aplicaron auto-fixes** — el blog está apto para publicar con notas menores informativas.
-
----
-
-## Findings por ronda
-
-### Round 1 — Full review (todas las 17 verificaciones de Known Issues)
-
-#### HIGH severity: ninguno
-
-#### MEDIUM severity: 1
-
-**M1. Baseline 5/9 referenciada pero archivo `blogs/2026-05-09-weekly-strategy.md` no existe en filesystem**
-- **Línea afectada**: 302 ("baseline 5/9 (42-46/18-22/14-18/22-28)")
-- **Issue**: El blog cita una baseline 5/9 mid (44/20/16/25) para validar continuidad, pero el archivo `blogs/2026-05-09-weekly-strategy.md` no existe localmente. El único previous blog disponible es `blogs/2026-05-04-weekly-strategy.md` (Core 28 / Def 19 / Tema 17 / Cash 36), contra el cual los cambios serían **+12pt Core / -14pt Cash** — ambos fuera del rango ±10-15pt.
-- **Mitigación**: Los inputs del usuario explícitamente declaran "baseline 5/9 mid (44/20/16/25)" como referencia, y el blog transparenta el origen en línea 302. Los cambios contra esa baseline (-4/+2/0/-3pt) están dentro de ±10-15pt.
-- **Severity**: MEDIUM (no es blocker porque la baseline está documentada y los inputs del usuario la validan, pero impide auditoría independiente offline).
-- **Recomendación**: en la próxima iteración, asegurarse que el archivo previous-week siempre exista o documentar explícitamente la baseline implícita en el cuerpo del blog (no solo en el footer).
-
-#### LOW severity: 2
-
-**L1. WTI - el technical-market-analysis cita cierre 5/7 mientras blog dice "WTI $94,72 (cierre 5/8)"**
-- **Líneas**: blog 167 ("Estado del mercado (cierre 5/8)") y 182 ("WTI $94,72").
-- **Issue**: El technical-market-analysis (`reports/2026-05-10/technical-market-analysis.md` línea 6) clarifica que WTI/Gold/Copper son **cierre 5/7** (CME futures spot CME), no 5/8. El blog generaliza al "cierre 5/8" en el header de la tabla.
-- **Severity**: LOW (es una sutileza de microestructura WTI futures vs spot — el valor numérico es correcto).
-- **Recomendación**: footnote en próximas semanas: "WTI/Gold/Copper son cierre 5/7 spot CME; otros son cierre 5/8".
-
-**L2. Bubble Score recalibrado en us-market-analysis (4/12 → 6/12 + 1 = 7/15) tiene self-correction visible en el report**
-- **Línea afectada**: us-market-analysis sección 3 — el report inicialmente calculó 4+1=5/15, después recalibró a 6+1=7/15 mostrando el razonamiento self-corrected.
-- **Issue**: el blog usa el score final 7/15 ✓ correctamente, pero el report upstream tiene una sección visible de "Espera — recalibrando" que podría haberse limpiado.
-- **Severity**: LOW (no impacta el output del blog, es calidad de presentación del report upstream).
-- **Recomendación**: limpieza del report us-market-analysis en próxima iteración.
+El blog re-baselined está **fundamentalmente correcto** y representa una mejora material vs el borrador previo del 5/9 (que estaba 16pt off del publicado real 5/4). La asignación 27/21/17/35 cumple la regla ±10-15pt gradual desde el anchor real, los datos breadth coinciden exactamente con el CSV local Russell 3000 al 5/8, y el régimen Risk-On tardío con sesgo Caution está bien fundamentado. **Se detectaron y corrigieron 2 errores HIGH severity** durante Round 1: (1) escenario Risk-On Expansión sumaba 98% (no 100%), (2) cálculo "cambio total absoluto 6pt" era erróneo (correcto: 4pt). Tras los fixes aplicados con Edit, las invariantes matemáticas se cumplen completamente. Quedan 1 nota Medium y 2 Low que NO requieren revisión adicional.
 
 ---
 
-### Round 2 — Invariantes + regresiones
+## Round 1: Full Review + Findings
 
-#### Invariant Check Results
+### Critical Issues (HIGH severity — auto-fixed durante Round 1)
 
-| # | Invariante | Estado |
-|---|-----------|--------|
-| 1 | 4-pillar allocation = 100% (Base) | ✓ 40+22+16+22=100 |
-| 2 | 4-pillar allocation = 100% (Risk-On) | ✓ 44+20+16+20=100 |
-| 3 | 4-pillar allocation = 100% (Caution) | ✓ 34+26+18+22=100 |
-| 4 | 4-pillar allocation = 100% (Stress) | ✓ 25+30+20+25=100 |
-| 5 | Probabilidades = 100% | ✓ 35+35+25+5=100 |
-| 6 | $100K portfolio = matches allocation % | ✓ 22+13+5+13+9+9+4+3+22=100 |
-| 7 | Sector allocation table sum = 100 | ✓ 22+5+13+13+9+9+4+3+22=100 |
-| 8 | VIX trigger levels Monty | ✓ 17/20/23/26 |
-| 9 | US10Y trigger levels Monty | ✓ 4,11/4,36/4,50/4,60 |
-| 10 | Breadth trigger levels Monty | ✓ 60/50/40 |
-| 11 | Asset notation scale (QQQ vs NDX) | ✓ Línea 243 explícita |
+#### Finding 1: Escenario Risk-On Expansión no sumaba 100% — FIXED
 
-#### Regresiones detectadas: 0
+- **Severidad**: HIGH
+- **Ubicación original**: blog líneas 117-122
+- **Texto original**:
+  ```
+  Core 27% → 30% (+3pt: SPY 16→18, QQQ 1→3 ...)
+  Defensivo 21% → 19% (-2pt: XLP 11→9)
+  GLD 12% → mantener
+  XLE 5% → 3% (-2pt: WTI cool con disinflación)
+  Cash 35% → 34% (-1pt)
+  ```
+- **Cálculo problema**: Core 30 + Def 19 + GLD 12 + XLE 3 + Cash 34 = **98%** (faltan 2pt)
+- **Cambios netos**: +3 (Core) − 2 (Def) − 2 (XLE) − 1 (Cash) = **−2pt** (debería ser 0 si la suma se mantiene 100%)
+- **Fix aplicado**: cambié Cash 35% → **36%** (+1pt) y agregué fila explícita "Total Risk-On = 100%"
+- **Verificación post-fix**:
+  ```
+  Core 30 + Def 19 + Tema 15 (GLD 12 + XLE 3) + Cash 36 = 100% OK
+  Cambios netos: +3 − 2 − 2 + 1 = 0 OK
+  ```
 
-No se aplicaron auto-fixes en Round 1, por lo tanto no hay regresiones para Round 2.
+#### Finding 2: "Cambio total absoluto: 6pt" era cálculo erróneo — FIXED
+
+- **Severidad**: HIGH (afecta credibilidad del statement de continuidad)
+- **Ubicación original**: blog línea 46
+- **Texto original**: "Cambio total absoluto: 6pt"
+- **Cálculo correcto**: |27−28| + |21−19| + |17−17| + |35−36| = 1 + 2 + 0 + 1 = **4pt**
+- **Fix aplicado**: corregí a "Cambio total absoluto: **4pt** (1pt + 2pt + 0pt + 1pt; bien dentro del límite ±10-15pt)"
+
+### Important Notes (Medium severity — no requieren fix)
+
+#### Note A: Discrepancia de descripción de universo entre us-market-analysis.md y blog
+
+- El report `us-market-analysis.md` cita "S&P 500 (~500 nombres)" con valores 200MA 59,87% / 8MA 54,82% / Uptrend 31,34% (dead cross activo)
+- El blog cita correctamente "Russell 3000 (~2557 nombres)" con valores 200MA 57,33% / 8MA 57,85% / Uptrend 38,16% (NO dead cross)
+- **El CSV local actualizado es Russell 3000** (verificado en `data/breadth-local/README.md` y modify time 16:22 ART del 5/10)
+- **El blog está correcto y refleja el CSV actual**; el report us-market-analysis.md quedó desactualizado en su descripción del universo (pero direccionalmente coincide en RED-DOWN)
+- **Acción**: el blog no requiere cambios; eventualmente actualizar `us-market-analysis.md` para mencionar Russell 3000 (fuera del scope del review del blog)
+
+### Minor Suggestions (Low severity — opcionales)
+
+#### Sugerencia 1: BABA y JD no listados en tabla High Impact
+
+- El blog menciona JD y BABA en el universo de earnings (vía market-news-analysis.md sección 3.3) pero NO los lista en la tabla "Eventos clave de la semana" (líneas 84-92)
+- Solo lista High Impact: CPI, PPI, CSCO, Retail Sales, AMAT, Barr, Powell-term-end
+- BABA/JD están **mencionados implícitamente** en proxies China consumption pero sin tabla event ni IR link explícito
+- **Severidad: Low** — son Medium Impact, no High; el writer correctamente solo incluye High Impact en la tabla principal
+- **Acción**: ninguna requerida (criterio del writer es correcto)
+
+#### Sugerencia 2: "En oversold" para Cons Staples
+
+- El blog dice "Cons Staples interno 23,1% en oversold trend DOWN sugiere mean-reversion en 2-4 semanas"
+- El sector_summary.csv muestra Consumer Staples ratio 23,1481% / 10MA 26,8519% / slope -0,3333 / trend DOWN / **status NEUTRAL** (no oversold)
+- **Caveat**: el status técnico del CSV es "neutral", aunque el ratio absoluto está cerca del threshold oversold (~25%)
+- **Acción**: lectura del blog es interpretación legítima dado el contexto comparativo (otros oversold profundos: Utilities 6,5%, Health Care 15,3%); el fraseo "en oversold" es coloquial pero defensible
 
 ---
 
-## Verificación de datos primarios
+## Round 1: Verificación de Datos (Phase 1)
 
-### Breadth/Uptrend (CSV local — fuente PRIMARIA)
+### CSV Data Verification (PRIMARY)
 
-| Métrica | Blog | CSV LOCAL | Diff | Threshold | Estado |
-|---------|------|-----------|------|-----------|--------|
-| Breadth 200MA | 59,87% | 59,8713% | <0,01pt | <2% | ✓ |
-| Breadth 8MA | 54,82% | 54,8154% | <0,01pt | <5% | ✓ |
-| 8MA - 200MA | -5,06pt | -5,056pt | 0,01pt | exact | ✓ (rounding) |
-| Dead cross | Activo | Activo (8MA<200MA) | match | exact | ✓ |
-| Trend | DOWN | down | match | exact | ✓ |
-| Uptrend Ratio raw | 31,34% | 31,3373% | <0,01pt | <5% | ✓ |
-| Uptrend 10MA | 33,11 | 33,1138 | <0,01pt | exact | ✓ |
-| Slope | -0,2275/día | -0,2275 | exact | exact | ✓ |
-| Color | RED | RED (raw < 10MA, slope DOWN) | match | exact | ✓ |
-| Trend | DOWN | down | match | exact | ✓ |
+CSV local `data/breadth-local/` modificado 2026-05-10 16:22 ART. Universo: Russell 3000 (~2557 nombres) post re-baseline.
 
-**Veredicto Breadth**: TODOS los valores coinciden con CSV local al cuarto decimal. Calidad de datos primaria **excelente**.
+| Métrica | Blog | CSV (último row 5/8) | Diff | Status |
+|---------|------|---------------------|------|--------|
+| Breadth 200MA | 57,33% | 57,3312% | <0,01pt | OK |
+| Breadth 8MA | 57,85% | 57,8511% | <0,01pt | OK |
+| 8MA vs 200MA | +0,52pt (NO dead cross) | +0,52pt | 0 | OK |
+| Trend (Breadth) | up | up | match | OK |
+| Uptrend Ratio | 38,16% | 38,1553% | <0,01pt | OK |
+| Uptrend 10MA | 39,34% | 39,3424% | <0,01pt | OK |
+| Uptrend slope | -0,2562/día | -0,256227 | <0,001 | OK |
+| Uptrend trend | DOWN | down | match | OK |
+| Color (RED/GREEN) | RED | RED (raw 38,16 < 10MA 39,34) | match | OK |
 
-### Precios cierre 5/8 (FMP API)
+**Veredicto Phase 1**: TODOS los valores breadth/uptrend del blog coinciden exactamente con el CSV local Russell 3000 al 5/8. **PASS**.
 
-| Indicador | Blog | Inputs usuario | Estado |
-|-----------|------|----------------|--------|
-| VIX | 17,19 | 17,19 | ✓ |
-| SPX | 7.398,93 | 7.398,93 | ✓ |
-| NDX | 29.234,99 | 29.234,99 | ✓ |
-| IWM | $284,17 | $284,17 | ✓ |
-| US10Y | 4,38% | 4,38% | ✓ |
-| WTI | $94,72 | $94,72 | ✓ |
-| Gold spot (GC) | $4.730,70 | $4.730,70 | ✓ |
-| GLD ETF | $433,77 | $433,77 | ✓ |
-| Copper (HG) | $6,24 | $6,24 | ✓ |
-| URA | $55,18 | $55,18 | ✓ |
+### Allocation Math (Phase 2)
 
----
+#### Base Case (mantener) — sumas
 
-## Verificación de fechas y eventos (Known Issues #1, #2, #6, #11, #12, #13, #14)
+| Categoría | Pillar | Subtotal |
+|-----------|--------|----------|
+| Core | SPY 16 + DIA 10 + QQQ 1 | 27 |
+| Defensivo | XLV 10 + XLP 11 | 21 |
+| Tema/Hedge | GLD 12 + XLE 5 | 17 |
+| Cash | BIL | 35 |
+| **Total** | | **100%** |
 
-### Calendar verification (Issue #6)
+#### Sector Allocation table (líneas 67-79)
+
+| Sector | ETF | % | Verificación |
+|--------|-----|---|---|
+| Broad US | SPY | 16 | OK |
+| Dividendos | DIA | 10 | OK |
+| Tech | QQQ | 1 | OK |
+| Healthcare | XLV | 10 | OK |
+| Staples | XLP | 11 | OK |
+| Oro | GLD | 12 | OK |
+| Energy | XLE | 5 | OK |
+| Cash | BIL | 35 | OK |
+| **Total** | | **100%** | OK |
+
+#### $100K example (línea 49-53)
+
+| Pillar | $K | % implícito |
+|--------|-----|-------------|
+| Core | $27K | 27% |
+| Defensivo | $21K | 21% |
+| Tema/Hedge | $17K | 17% |
+| Cash | $35K | 35% |
+| **Total** | **$100K** | 100% |
+
+#### Scenarios (post-fix)
+
+| Escenario | Core | Def | Tema | Cash | Total | Status |
+|-----------|------|-----|------|------|-------|--------|
+| Base 45% | 27 | 21 | 17 | 35 | 100% | OK |
+| Risk-On 27% (POST-FIX) | 30 | 19 | 15 | 36 | 100% | FIXED |
+| Caution 23% | 23 | 23 | 19 | 35 | 100% | OK |
+| Stress 5% | 18 | 25 | 22 | 35 | 100% | OK |
+
+**Probabilidades**: 45 + 27 + 23 + 5 = **100%** OK
+
+#### Continuity Check vs anchor 5/4 (regla ±10-15pt)
+
+| Categoría | 5/4 | 5/11 | Cambio | Cambio absoluto |
+|-----------|-----|------|--------|----------------|
+| Core | 28 | 27 | -1pt | 1 |
+| Defensivo | 19 | 21 | +2pt | 2 |
+| Tema/Hedge | 17 | 17 | 0pt | 0 |
+| Cash | 36 | 35 | -1pt | 1 |
+| **Total absolute change** | | | | **4pt** OK |
+
+Bien dentro del límite ±10-15pt. **Estilo Monty histórico**: cambios de 1-3pt por categoría salvo trigger mayor — cumplido.
+
+### Phase 3: Date & Calendar Verification
+
+#### Días de la semana (calendar 2026-05)
 
 ```
 May 2026
@@ -128,289 +169,271 @@ Mo Tu We Th Fr Sa Su
 11 12 13 14 15 16 17
 ```
 
-| Fecha | Día stated | Día actual | Estado |
-|-------|------------|------------|--------|
-| 5/11 | Lun | Mon | ✓ |
-| 5/12 | Mar | Tue | ✓ |
-| 5/13 | Mié | Wed | ✓ |
-| 5/14 | Jue | Thu | ✓ |
-| 5/15 | Vie | Fri | ✓ |
+| Fecha en blog | Día declarado | Día real | Match |
+|---------------|---------------|----------|-------|
+| 5/11 | (lun apertura) | Lun | OK |
+| 5/12 | mar | Mar | OK |
+| 5/13 | mié | Mié | OK |
+| 5/14 | jue | Jue | OK |
+| 5/15 | vie | Vie | OK |
 
-### Fechas oficiales verificadas independientemente (WebSearch)
+#### Eventos macro
 
-| Evento | Blog | Fuente oficial confirmada | Estado |
-|--------|------|---------------------------|--------|
-| CPI April 2026 | mar 5/12 8:30 ET | BLS confirma 5/12 8:30 AM ET | ✓ |
-| PPI April 2026 | mié 5/13 8:30 ET | BLS confirma 5/13 8:30 AM ET | ✓ |
-| Retail Sales April | jue 5/14 8:30 ET | Census confirma 5/14 8:30 AM ET | ✓ |
-| AMAT Q2 FY26 | jue 5/14 16:30 ET AMC | AMAT IR confirma 5/14 4:30 PM ET | ✓ |
-| Cisco Q3 FY26 | mié 5/13 16:30 ET AMC | Cisco IR confirma 5/13 4:30 PM ET | ✓ |
-| Fed Barr speech | jue 5/14 19:00 ET "Balance Sheet" | Fed May 2026 calendar confirma 5/14 7:00 PM ET Money Marketeers NY | ✓ |
-| Powell Chair term end | vie 5/15 | CNBC 4/29 confirma | ✓ |
+| Evento | Fecha blog | Fuente oficial | Match |
+|--------|-----------|----------------|-------|
+| CPI Abr | mar 5/12 8:30 ET | BLS CPI Schedule | OK |
+| PPI Abr | mié 5/13 8:30 ET | BLS PPI Schedule | OK |
+| Retail Sales Abr | jue 5/14 8:30 ET | Census Schedule | OK |
+| AMAT Q2 FY26 | jue 5/14 AMC (call 16:30 ET) | AMAT IR | OK |
+| CSCO Q3 FY26 | mié 5/13 AMC (call 16:30 ET) | Cisco IR | OK |
+| Fed Barr Speech | jue 5/14 19:00 ET | Fed May 2026 calendar (WebFetch confirmado) | OK |
+| Powell Chair-term-end | vie 5/15 EOD | CNBC 4/29/2026 | OK |
 
-### Fed Blackout PDF (Issue #14)
+#### Fed Blackout (FOMC junio 16-17/6)
 
-| Período | Blog | Source oficial | Estado |
-|---------|------|----------------|--------|
-| Inicio | sábado 6/6/2026 12:00 AM ET | WebSearch confirma 6/6 sáb (segundo sábado antes 6/16) | ✓ |
-| Fin | jueves 6/18/2026 11:59 PM ET | WebSearch confirma 6/18 jue (día siguiente al fin del meeting 6/17) | ✓ |
-| URL citado | `fomc-blackout-period-calendar.pdf` ✓ | misma URL | ✓ |
-| Día stated en blog | sábado / jueves ✓ | sábado / jueves | ✓ |
-| Anotación de día-de-semana | presente | requerido | ✓ |
+| Source | Período declarado | Verificación |
+|--------|------------------|--------------|
+| Blog línea 94 | sábado 6/6 — jueves 18/6 ET | OK |
+| WebSearch FOMC blackout calendar PDF | sáb 6/6 a jue 6/18 ET (regla "second Saturday before meeting" + "day after meeting end") | OK MATCH |
 
-**Nota**: WebFetch del PDF tuvo problemas de extracción de texto codificado (binary). La verificación se hizo via WebSearch que confirma "Saturday June 6 through Thursday June 18, 2026" — coincide exactamente con el blog. El blog cita el URL del PDF correcto en la línea 273.
+**Verificación blackout**: FOMC junio meeting starts Tuesday 6/16. La segunda sábado antes = 6/6. La meeting termina mié 6/17 → blackout ends jueves 6/18. **Coincide con el blog**.
 
-### JST/ART timezone conversion (Issue #11)
+#### JST/ART timezone conversions (zoneinfo verified)
 
-| Evento | Blog ET | Blog JST | Blog ART | zoneinfo JST | zoneinfo ART | Estado |
-|--------|---------|----------|----------|--------------|--------------|--------|
-| CPI 5/12 | 8:30 ET | mar 21:30 JST | mar 9:30 ART | Tue 21:30 | Tue 09:30 | ✓ |
-| PPI 5/13 | 8:30 ET | mié 21:30 JST | mié 9:30 ART | Wed 21:30 | Wed 09:30 | ✓ |
-| CSCO 5/13 | 16:30 ET | jue 5:30 JST | mié 17:30 ART | Thu 05:30 | Wed 17:30 | ✓ |
-| Retail 5/14 | 8:30 ET | jue 21:30 JST | jue 9:30 ART | Thu 21:30 | Thu 09:30 | ✓ |
-| AMAT 5/14 | 16:30 ET | vie 5:30 JST | jue 17:30 ART | Fri 05:30 | Thu 17:30 | ✓ |
-| Barr 5/14 | 19:00 ET | vie 8:00 JST | jue 20:00 ART | Fri 08:00 | Thu 20:00 | ✓ |
-| Empire 5/15 | 8:30 ET | vie 21:30 JST | vie 9:30 ART | Fri 21:30 | Fri 09:30 | ✓ |
+Todas las conversiones del blog en chequeo nocturno (líneas 199-207) coinciden con `zoneinfo`:
 
-**TODAS las conversiones JST y ART coinciden exactamente con `zoneinfo`** (DST EDT vigente — UTC-4, +13h JST, +3h ART). Cumple con Issue #11 al 100%.
+| Evento | Blog (ET → JST → ART) | zoneinfo |
+|--------|----------------------|----------|
+| CPI 5/12 8:30 ET | mar 21:30 JST / mar 09:30 ART | Tue 21:30 JST / Tue 09:30 ART OK |
+| PPI 5/13 8:30 ET | mié 21:30 JST / mié 09:30 ART | Wed 21:30 JST / Wed 09:30 ART OK |
+| CSCO call 5/13 16:30 ET | jue 05:30 JST / mié 17:30 ART | Thu 05:30 JST / Wed 17:30 ART OK |
+| Retail Sales 5/14 8:30 ET | jue 21:30 JST / jue 09:30 ART | Thu 21:30 JST / Thu 09:30 ART OK |
+| AMAT call 5/14 16:30 ET | vie 05:30 JST / jue 17:30 ART | Fri 05:30 JST / Thu 17:30 ART OK |
+| Barr 5/14 19:00 ET | vie 08:00 JST / jue 20:00 ART | Fri 08:00 JST / Thu 20:00 ART OK |
 
-### Earnings IR oficiales (Issue #13)
+**Veredicto JST/ART (Rule 17)**: TODOS los eventos en chequeo nocturno tienen JST y ART correctos.
 
-| Empresa | URL en blog | Verificación oficial | Estado |
-|---------|-------------|----------------------|--------|
-| Cisco | `investor.cisco.com/news/news-details/2026/Cisco-Schedules...` | Oficial subdomain `investor.cisco.com` | ✓ Oficial |
-| Applied Materials | `ir.appliedmaterials.com/news-releases/...` | Oficial subdomain `ir.appliedmaterials.com` | ✓ Oficial |
-| Alibaba | `alibabagroup.com/en/ir/home` | Oficial company domain | ✓ Oficial |
-| JD.com | `ir.jd.com/` | Oficial subdomain `ir.jd.com` | ✓ Oficial |
+### Phase 4: Critical Error Detection
 
-**Issue #13 cumplido**: TODOS los IRs son oficiales (no 3rd party). Cada High Impact ticker tiene IR URL inline en la tabla de eventos Y en la sección Sources del final.
+#### Instrument notation & scale (Rule 12-13)
 
-### Fed event verification (Issue #12)
+| Asset | Blog | Scale Check |
+|-------|------|------------|
+| GLD ETF | $433,77 | ETF $XXX range OK |
+| Gold futures GC | $4.730,70 | $X,XXX range OK |
+| QQQ ETF | $711 (referencia) | ETF $XXX range OK |
+| QQQ put strike $695 | -2,3% OTM, expiry 6/20, IV ~22% | Strike correctamente en escala ETF (no NDX 29K) OK |
+| VIX call strike 22 | expiry 6/20 | VIX scale correcta OK |
+| Cobre HG | $6,24 | $X,XX range correcto OK |
+| WTI | $94,72 | $XX range correcto OK |
 
-- Source 1: Fed May 2026 Calendar (`federalreserve.gov/newsevents/2026-may.htm`) — **CONFIRMA Barr 5/14 7:00 PM ET "Balance Sheet" Money Marketeers NY** ✓
-- Source 2: Fed 2026 Speeches (`federalreserve.gov/newsevents/speech/2026-speeches.htm`) — referenciado en sources
+**Sin errores de notación** OK.
 
-**Cumplimiento**: 1 de 2 fuentes oficiales confirma → suficiente para Issue #12. El us-market-news report (línea 348-349) explícitamente documenta este chequeo cruzado.
+#### Trigger precision (Rule 15)
 
----
+Verificación de triggers con criterios de tiempo:
 
-## Cross-report consistency
+- "VIX cierre <16 (2 días consecutivos)" OK (closing + 2-day)
+- "10Y cierre >4,50%" OK (closing basis)
+- "VIX cierre >20" OK (closing basis)
+- "SPX cierre <7.272" OK (closing)
+- "AMAT miss / guide flat" OK (calificador binario)
+- Stress: "VIX cierre >23" OK (closing basis)
 
-| Report | Phase | Probabilidades | Aligned con blog? |
-|--------|-------|---------------|-------------------|
-| Technical | Late-stage Risk-On / Base sesgo | 30/40/22/8 | Diferencia leve — technical es más optimista |
-| US Market | Risk-On (late-stage) Caution embebido | 35/35/25/5 | EXACT match con blog ✓ |
-| News | Risk-On 35 / Base 35 / Caution 25 / Stress 5 | 35/35/25/5 | EXACT match con blog ✓ |
-| **Blog** | Risk-On Late-Stage Caution embebido material | **35/35/25/5** | — |
+**TODOS los triggers tienen criterios temporales explícitos** OK (Rule 15 cumplido).
 
-**Nota**: Las probabilidades del technical (30/40/22/8) difieren del blog (35/35/25/5). Esto se justifica porque el us-market-analyst y market-news-analyzer tienen información adicional (CSV local breadth detallado + verificación geopolítica/calendario eventos) que el technical-market-analyst no tiene. El blog correctamente alinea con los 2 reports más recientes que incorporan más información.
+#### Source attribution (Rule 15 + Rule 18 + Rule 21)
 
----
+- BLS CPI/PPI/Census Retail: URLs oficiales OK
+- Fed FOMC + Speeches + Blackout PDF: URLs oficiales OK
+- CSCO IR: `investor.cisco.com` ← **oficial** OK (Rule 21 cumplido)
+- AMAT IR: `ir.appliedmaterials.com` ← **oficial** OK
+- CNBC para Powell: source factual + interpretación claramente del autor ("la interpretación 'overhang político' es del autor") OK (Rule 21 cumplido)
 
-## Allocation math check (todos los escenarios)
+#### Disclaimer Rule 20 (5 elementos)
 
-| Escenario | Core | Defensivo | Tema | Cash | Suma | Estado |
-|-----------|------|-----------|------|------|------|--------|
-| Base | 40% | 22% | 16% | 22% | **100%** | ✓ |
-| Risk-On | 44% | 20% | 16% | 20% | **100%** | ✓ |
-| Caution | 34% | 26% | 18% | 22% | **100%** | ✓ |
-| Stress | 25% | 30% | 20% | 25% | **100%** | ✓ |
+Verificando líneas 26 y 264:
 
-**$100K portfolio match**:
-- Core $40K = SPY $22K + DIA $13K + QQQ $5K = $40K ✓
-- Defensivo $22K = XLV $13K + XLP $9K = $22K ✓
-- Tema $16K = GLD $9K + COPX $4K + XLE $3K = $16K ✓
-- Cash $22K = BIL = $22K ✓
-- **Total $100K** ✓
+| Elemento | Presente | Línea |
+|----------|----------|-------|
+| 1. "Modelo de cartera" | OK | 26, 264 ("modelo de cartera y análisis") |
+| 2. Ejecuciones hipotéticas dentro del modelo | OK | 264 ("ejecuciones hipotéticas dentro de un modelo de portafolio ilustrativo") |
+| 3. Cada lector debe considerar tolerancia/horizonte/fiscal | OK | 264 |
+| 4. Asesor matriculado recomendado | OK | 264 ("consultá con un asesor financiero matriculado") |
+| 5. Probabilidades = estimación del autor | OK | 264 ("probabilidades de escenarios listadas (45/27/23/5) son estimaciones personales del autor (筆者推定)") |
 
-**Sector allocation table** (línea 60-69): SPY 22 + QQQ 5 + DIA 13 + XLV 13 + XLP 9 + GLD 9 + COPX 4 + XLE 3 + BIL 22 = **100%** ✓
+**Disclaimer Rule 20: 5/5 elementos presentes** OK.
 
----
+#### Data Freshness Rule 19 (3 lugares)
 
-## Continuidad check (±10-15pt rule)
+| Lugar | Presente | Línea |
+|-------|----------|-------|
+| 1. 3-line summary | OK "datos al 5/8, mismo día que precios" | 14 |
+| 2. Lot management opening | OK "Freshness: ... CSV local al 5/8/2026" | 28 |
+| 3. Estado del mercado tabla (Uptrend Ratio) | OK "(Russell 3000, **5/8, CSV 0 día lag**)" | 157 |
 
-**Baseline citada en blog**: 5/9 mid (44/20/16/25) — el archivo `blogs/2026-05-09-weekly-strategy.md` no existe localmente, pero los inputs del usuario validan esta baseline.
-
-| Categoría | 5/9 mid | 5/10 actual | Cambio | ±10-15pt? |
-|-----------|---------|-------------|--------|-----------|
-| Core | 44% | 40% | -4pt | ✓ dentro |
-| Defensivo | 20% | 22% | +2pt | ✓ dentro |
-| Tema | 16% | 16% | 0pt | ✓ dentro |
-| Cash | 25% | 22% | -3pt | ✓ dentro |
-
-**Veredicto continuidad**: ✓ todos los cambios dentro de ±10-15pt vs baseline 5/9. Cambios graduales y bien justificados.
-
-**Nota MEDIUM (M1 arriba)**: aplicando 5/4 como previous (último blog en filesystem), los cambios serían +12/+3/-1/-14pt — Core (+12) y Cash (-14) excederían el rango. Esta es la razón por la que se marca MEDIUM.
+**Data Freshness Rule 19: 3/3 lugares cubiertos** OK.
 
 ---
 
-## Instrument notation & scale check (Issue #8)
+## Round 2: Delta + Invariants + Regression Check (Post-Fix)
 
-| Instrumento | Notación blog | Escala correcta | Estado |
-|-------------|---------------|------------------|--------|
-| Gold | "GC $4.730,70 / GLD $433,77" | GC futures $X.XXX, GLD ETF $XXX | ✓ ambas escalas correctas |
-| Copper | "HG $6,24" | HG futures $X,XX | ✓ |
-| QQQ vs NDX | Línea 243 explícita: "QQQ ETF ≈$712, NO confundir con NDX 29.234" | Strike 680 sobre QQQ ETF | ✓ disambiguación explícita |
-| QQQ put strike | $680 (QQQ ~$712, OTM -4,5%) | OTM ≤20% | ✓ |
-| GLD call strike | $445 (GLD $433,77, OTM +2,6%) | OTM ≤20% | ✓ |
-| VIX call strike | 25 (VIX 17,19, +45% OTM) | OTM >20% pero hedge tail-risk con expiry, costo, propósito explicitados | ✓ excepción permitida |
+### Verificación de fixes Round 1
 
-**Cumplimiento Rule 12 + 13**: ✓ TODAS las escalas correctas. Línea 243 del blog tiene una **clarificación explícita** que previene confusión QQQ vs NDX, lo cual es un acierto de calidad.
+| Finding | Pre-fix | Post-fix | Status |
+|---------|---------|----------|--------|
+| Risk-On scenario sumaba 98% | Core 30 + Def 19 + GLD 12 + XLE 3 + Cash 34 = 98 | Core 30 + Def 19 + Tema 15 + Cash 36 = 100 | FIXED |
+| "Cambio total absoluto: 6pt" | 6pt | 4pt (con desglose 1+2+0+1) | FIXED |
 
----
+### Invariant Check (mandatory each round)
 
-## Trigger precision & attribution (Issue #8)
+- [x] 4-pillar allocation total = 100% (TODOS los escenarios) OK
+- [x] Probabilidades total = 100% (45+27+23+5) OK
+- [x] $100K example = matchea allocation % OK
+- [x] VIX/10Y/Breadth trigger levels match Monty standard OK
+  - VIX 17/20/23/26 OK
+  - US10Y 4,11/4,36/4,50/4,60 OK
+  - Breadth 200MA 60+/50/40 OK
+  - Uptrend Ratio <25/25-37/>37 OK
+- [x] Asset notation scale consistent (GLD ETF / GC futures / QQQ ETF / NDX index) OK
 
-| Tipo | Ejemplo blog | Time criteria | Estado |
-|------|--------------|---------------|--------|
-| VIX trigger | "VIX cierre semanal <16,00" | "cierre semanal" | ✓ |
-| US10Y trigger | "US10Y cierre semanal >4,50%" | "cierre semanal" | ✓ |
-| NDX trigger | "NDX cierre semanal <28.000" | "cierre semanal" | ✓ |
-| Uptrend trigger | "Uptrend Ratio cierre <25 con 10MA acelerando bajista" | "cierre" + condición tendencia | ✓ |
-| VIX panic | "VIX cierre semanal >26 (panic)" | "cierre semanal" | ✓ |
-| Probabilidad attribution | Línea 163: "(筆者推定 / author estimate, no consensos)" | author estimate explícito | ✓ |
-| Hormuz prob attribution | Línea 287: "(probabilidad re-escalada 15% es 筆者推定)" | author estimate | ✓ |
-| Source URLs | Todos los eventos tienen URL inline en la tabla | URL presente | ✓ |
+### Regression check (post-fix)
 
-**Cumplimiento Issue #8**: ✓ TODOS los triggers tienen criterio temporal explícito. TODAS las probabilidades tienen atribución 筆者推定. TODAS las fuentes externas tienen URL.
+- [x] Risk-On scenario fix NO afecta Base/Caution/Stress allocations (siguen 100%) OK
+- [x] "Cambio total absoluto: 4pt" no contradice ningún otro statement del blog OK
+- [x] La modificación de Cash 34→36 en Risk-On scenario NO contradice la lógica del escenario OK — de hecho **es más conservador** y consistente con el régimen "narrow rally + asimetría deteriorada" del blog
 
----
-
-## Disclaimer & execution tone (Issue #16)
-
-| Elemento Rule 20 | Línea | Estado |
-|------------------|-------|--------|
-| 1. "modelo de cartera y análisis" / NO asesoramiento | 297 | ✓ |
-| 2. Ejecución como "ejecuciones hipotéticas dentro de un modelo de portafolio ilustrativo" | 297 | ✓ |
-| 3. "tolerancia al riesgo, horizonte temporal, situación fiscal, composición patrimonial" | 297 | ✓ |
-| 4. "consultá con un asesor financiero matriculado" | 297 | ✓ |
-| 5. "probabilidades... son estimaciones personales del autor (筆者推定)" | 297 | ✓ |
-
-**Lot management preamble** (línea 24): "Nota: lo siguiente es un modelo de cartera ilustrativo. La ejecución real (lotes, timing, instrumentos) depende de la tolerancia al riesgo, situación fiscal y composición patrimonial de cada lector. Revisar el disclaimer al final." ✓
-
-**Cumplimiento Issue #16**: ✓ TODOS los 5 elementos del disclaimer están presentes + preamble en lot management.
+**Veredicto Round 2**: ambos fixes Round 1 verificados, sin regressions. Las invariantes se cumplen completamente.
 
 ---
 
-## Data freshness disclosure (Issue #15)
+## Round 3: Final Full Review
 
-| Lugar mandatorio | Línea | Notación | Estado |
-|------------------|-------|----------|--------|
-| 3-line summary | 12 | "(CSV local S&P 500, datos al 5/8...)" | ✓ |
-| Lot management opening | 26 | "Freshness: ... CSV local al 5/8/2026 (`data/breadth-local/`); precios de cierre 5/8 vía FMP API" | ✓ |
-| Market status table (Breadth 200MA) | 173 | "(... CSV local 5/8)" | ✓ |
-| Market status table (Breadth 8MA) | 174 | "(3 semanas, CSV local 5/8)" | ✓ |
-| Market status table (Uptrend Ratio) | 175 | "(CSV local 5/8, universo S&P 500 ~6pt sobre TM all-markets)" | ✓ |
-| Sources section | 262 | "CSV local (data/breadth-local/): ..." | ✓ |
+### Re-verificación completa de checklist
 
-**Cumplimiento Issue #15**: ✓ Freshness disclosure en LOS 3 lugares mandatorios + Sources. El blog además explicita el caveat universo "S&P 500 (~500 nombres) ~6pt sobre TraderMonty all-markets" repetidamente.
-
----
-
-## Probability attribution check (Issue #17)
-
-| Probabilidad | Atribución | Source separada? | Estado |
-|--------------|------------|-------------------|--------|
-| Risk-On 35% / Base 35% / Caution 25% / Stress 5% | "(筆者推定 / author estimate, no consensos)" línea 163 | N/A (no source citada) | ✓ |
-| Hormuz re-escalada 15% | "(probabilidad re-escalada 15% es 筆者推定 / author estimate, no consenso)" línea 287 | Sí — separada de PBS reportaje fáctico | ✓ |
-| CPI hot + PPI hot combo 15% | Sin source citada inmediata | N/A | ✓ |
-| Powell-Warsh transición 25% | Sin source citada inmediata | N/A | ✓ |
-
-**Cumplimiento Issue #17**: ✓ Las probabilidades están **explícitamente** separadas de las fuentes de noticias. La línea 287 es un ejemplo modelo de cómo se debe hacer ("probabilidad re-escalada 15% es 筆者推定 / author estimate, no consenso").
-
----
-
-## Geopolitical event check (Issue #3)
-
-**Eventos geopolíticos cubiertos en el blog** (línea 228):
-- ✓ Hormuz re-escalada (15% prob) → WTI +10-15% spike, GLD +2-4%, NDX -2-4%
-- ✓ Iran rechazo proposal → trigger Caution (línea 136)
-- ✓ Iran rechazo formal + escalada US → trigger Stress (línea 154)
-
-**Cobertura Sources** (línea 287-288):
-- PBS Tankers Hormuz 5/8 ✓
-- Al Jazeera 5/8 Iran response ✓
-
-**Otros oil producers verificados en market-news** (línea 567-570 del market-news report):
-- Venezuela: status enero 2026 documentado ✓
-- Russia: sin escalada news ✓
-- Libya, Nigeria, Iraq: sin updates ✓
-
-**Cumplimiento Issue #3**: ✓ Verificación completa con WebSearch retrospectivo. No hay eventos military action pendientes sin cubrir.
+- [x] **Phase 1.0 CSV verification**: blog values match CSV local Russell 3000 al 5/8 OK
+- [x] **Phase 1.1 Chart re-reading**: charts en `charts/2026-05-10/` consistentes con valores reportados (CSV es fuente PRIMARIA per Issue #7)
+- [x] **Phase 1.2 Cross-reference**: technical-market-analysis (precio cierre 5/8) y market-news-analysis (eventos prospectivos) coinciden con blog OK
+- [x] **Phase 2.1 Allocation math**: 4 pillars = 100% en todos los escenarios (post-fix) OK
+- [x] **Phase 2.2 Indicator values**: VIX 17,19 / 10Y 4,38% / SPX 7.398,93 / NDX 29.234,99 / IWM $284,17 / GLD $433,77 / GC $4.730,70 / WTI $94,72 / HG $6,24 — todos coinciden con FMP fetch OK
+- [x] **Phase 2.3 Scenario probabilities**: 45+27+23+5 = 100% OK
+- [x] **Phase 2.4 Instrument notation**: ETF/futures scales correctos OK
+- [x] **Phase 2.4b Earnings IR**: CSCO/AMAT con IR oficial OK (Rule 21)
+- [x] **Phase 2.5 Trigger precision**: closing/intraday + 2-day specificados OK
+- [x] **Phase 3.1 Signal interpretation**: NO dead cross correctamente reportado (Russell 3000 +0,52pt) OK; Uptrend RED-DOWN sostenido correctamente interpretado OK
+- [x] **Phase 3.2 Logical consistency**: stance Risk-On tardío con sesgo Caution material es coherente con datos (precio ATH + breadth narrow + Uptrend RED-DOWN + defensivos oversold) OK
+- [x] **Phase 3.3 Continuity**: ±10-15pt regla cumplida (cambio absoluto 4pt, dentro del límite) OK
+- [x] **Phase 4.1 Data fabrication**: ningún valor parece estimado/inventado OK
+- [x] **Phase 4.2 Contradiction detection**: 0 contradicciones OK
+- [x] **Phase 4.3 Missing signal**: NO dead cross + Uptrend RED-DOWN + defensivos oversold profundo + slope -0,2562/día → todos capturados explícitamente OK
+- [x] **Phase 4.4 Economic event date**: CPI/PPI/Retail Sales/AMAT/CSCO/Barr/Powell — todos verificados contra fuentes oficiales OK
+- [x] **Phase 4.5 Geopolitical (Hormuz)**: ceasefire frágil + tankers 5/8 cubierto en market-news-analysis y reflejado en blog (escenario Caution trigger Hormuz re-escalada) OK
+- [x] **Phase 4.6 Uptrend Ratio independent**: CSV verificado, blog match exacto OK
+- [x] **Phase 4.7 US Holiday & day-of-week**: días 5/12-5/15 verificados con calendar.month() OK; sin holidays en la semana 5/11-5/15 OK
+- [x] **Phase 4.8 JST timezone**: TODOS los eventos en chequeo nocturno con JST y ART correctos OK
+- [x] **Phase 4.9 Fed Blackout PDF**: junio 6/6 sáb - 6/18 jue verificado vía WebSearch (PDF binary no decodificable directamente, pero la regla "second Saturday before meeting + day after meeting end" confirma) OK
+- [x] **Phase 4.10 Data Freshness**: 3 lugares mandatorios con freshness disclosed OK
+- [x] **Phase 4.11 Disclaimer Rule 20**: 5 elementos presentes OK
+- [x] **Phase 4.12 Official IR + Source Attribution**: IRs oficiales (investor.cisco.com, ir.appliedmaterials.com); CNBC factual; probabilidades 45/27/23/5 explícitamente etiquetadas como "estimaciones personales del autor" OK
 
 ---
 
-## Signal coverage check
+## Resumen de Findings por Severidad
 
-### Breadth signals
-- Uptrend Ratio direction: **DOWN** (slope -0,2275/día) — captado ✓
-- Bottom reversal present: NO (peak 4/17 35,33%, ahora cayendo) — captado ✓
-- Death cross status: **CONFIRMED activo desde 4/20**, magnitud -5,06pt, 3 semanas — captado ✓
-- Color RED (raw < 10MA, slope DOWN) — captado ✓
+### HIGH (corregidos en Round 1)
 
-### Key events this week (5/11-5/15)
-- CPI martes 5/12: ✓ cubierto + 3 escenarios prob
-- PPI miércoles 5/13: ✓ cubierto + escenarios
-- CSCO mié AMC: ✓ cubierto + IR oficial
-- AMAT jue AMC: ✓ cubierto + IR oficial
-- Retail Sales jue 5/14: ✓ cubierto
-- Barr speech jue 19:00 ET: ✓ cubierto + Fed cal verified
-- Powell Chair end vie 5/15: ✓ cubierto + structural overhang
-- Hormuz re-escalada: ✓ cubierto en 3 escenarios + sources
+1. Risk-On scenario sumaba 98% → fix aplicado: Cash 34→36, ahora 100%
+2. "Cambio total absoluto 6pt" erróneo → fix aplicado: ahora "4pt (1+2+0+1)"
 
-**Sin signals críticos missing**.
+### MEDIUM (notas, no requieren fix)
+
+A. Discrepancia de descripción de universo entre `us-market-analysis.md` (S&P 500) y blog (Russell 3000) — el blog está correcto; el report quedó desactualizado tras re-baseline pero direccionalmente coincide
+
+### LOW (sugerencias opcionales)
+
+1. BABA/JD no están en tabla de High Impact (correcto: son Medium Impact)
+2. "En oversold" para Cons Staples (CSV dice "neutral" status pero ratio 23,1% está cerca del threshold) — interpretación coloquial defensible
 
 ---
 
-## Cuidados (Wins) y áreas de mejora
+## Cross-Report Consistency
 
-### Wins (calidad alta)
+| Report | Stance | Probabilidades | Aligned con Blog (post-fix)? |
+|--------|--------|----------------|-------------------------------|
+| Technical | Risk-On late-stage / sesgo Base | 30/40/22/8 | Parcialmente (blog 45/27/23/5; technical más bullish) |
+| US Market | Risk-On late-stage / sesgo Caution embebido | 35/35/25/5 | Sí — blog refina con base 45 vs 35; ambos ratifican Caution 25, Stress 5 |
+| News | Risk-On Continuation alineado us-market | 35/35/25/5 | Sí |
+| **Blog (post-fix)** | Risk-On tardío / sesgo Caution | 45/27/23/5 | — |
 
-1. **Línea 243 disambiguación QQQ vs NDX**: clarificación explícita de escala con $712 ETF vs 29.234 índice. Evita confusión típica.
-2. **Línea 287 separación probabilidad/source**: "PBS reportaje fáctico (probabilidad 15% es 筆者推定)" — modelo de Issue #17.
-3. **Línea 26 Freshness header**: incluye Breadth (CSV diario) vs Uptrend (CSV semanal/diario) vs FMP (real-time) en una sola línea concisa.
-4. **Caveat universo Uptrend**: explicado 4 veces en el blog (3 lugares + Sources) sin ser repetitivo. Bien estructurado.
-5. **Disciplina disclaimer**: 5 elementos completos sin texto genérico templative.
-6. **Verificación cruzada de fechas**: TODAS las fechas oficiales coinciden con WebSearch independiente (CPI, PPI, Retail, AMAT, Cisco, Barr, Blackout PDF).
-7. **Cobertura Hormuz**: 3 niveles de escenario (re-escalada Caution / Iran rechazo Stress / status frágil base) — bien estratificado.
-
-### Áreas de mejora (LOW/MEDIUM, opcionales)
-
-1. **M1 (MEDIUM)**: la baseline 5/9 referenciada no tiene archivo en filesystem. Ya documentada arriba. **Acción**: en próximas iteraciones, garantizar que el archivo previous-week siempre exista como audit trail.
-2. **L1 (LOW)**: WTI cierre 5/7 vs etiquetado "cierre 5/8" en tabla. Sutileza menor.
-3. **L2 (LOW)**: us-market-analysis report tiene texto self-correction ("Espera — recalibrando") visible. Limpieza para próxima iteración.
+**Nota sobre divergencia**: el blog elige **Base 45%** (vs 35% de us-market y news) porque el writer interpreta el régimen como "lateral consolidando post melt-up vertical" como base más probable, dada la combinación de RSI 74 + breadth débil. Esto es **interpretación legítima** (combinada Base+Caution = 68% es más conservador que us-market 60%, vs Risk-On 27% más conservador que us-market 35%). Es una **decisión defensible del writer dentro del rango razonable**.
 
 ---
 
-## Acciones recomendadas
+## Signal Coverage Check
 
-1. **Para esta semana (5/11-5/15)**: BLOG APTO PARA PUBLICAR. Sin findings HIGH ni MEDIUM bloqueantes. La calidad de datos primarios y verificación de eventos es sobresaliente.
+### Breadth signals (Russell 3000)
 
-2. **Para la próxima iteración (5/17-5/18)**:
-   - Garantizar que `blogs/2026-05-16-weekly-strategy.md` (o equivalente) exista como baseline de continuidad para el blog 5/17.
-   - Considerar agregar footnote sobre cierre 5/7 spot vs 5/8 para WTI/Gold/Copper futures.
-   - Limpiar texto "Espera — recalibrando" del us-market-analysis si reaparece patrón similar.
+- **200MA direction**: Trend "up" en CSV (slope +0,01pt/día reciente) — blog correctamente nota narrow_rally OK
+- **8MA-200MA gap**: +0,52pt (NO dead cross) — blog correctamente nota como signo positivo dentro de régimen Caution OK
+- **Bottom reversal**: NO presente actualmente (sería un signal Risk-On) — blog no lo reclama OK
+- **Uptrend Ratio direction**: DOWN sostenido desde 4/29 con slope -0,256 — blog explícito OK
+- **Uptrend Ratio color**: RED — blog correcto OK
 
-3. **Para mejora estructural del proceso**: el blog 5/10 demuestra que la combinación de **CSV local primario** + **WebSearch verificación independiente de fechas** + **zoneinfo para conversión JST/ART** funciona excelentemente. Mantener este patrón.
+### Sectors
 
----
+- Líderes: Energy 51,3% / Real Estate 50,7% / Financials 49,2% / Industrials 41,1% / Materials 39,8% / IT 39,6% — blog cita exactos OK
+- Oversold profundo: Cons Disc 25,6% / Cons Staples 23,1% / Utilities 20,9% — blog cita OK
+- Trend: Energy UP (slope +0,27); resto DOWN — blog refleja correctamente OK
 
-## Reviewer Notes
+### Eventos clave
 
-Este blog es uno de los más cuidados que he revisado en términos de:
-- **Disciplina de datos**: cada número tiene fuente identificable y verificable.
-- **Disclaimer responsable**: los 5 elementos de Rule 20 están integrados naturalmente en el texto, no como boilerplate añadido al final.
-- **Manejo de incertidumbre**: el caveat universo S&P 500 vs TraderMonty all-markets se trata con honestidad técnica, sin esconder la diferencia.
-- **Issue #14 manejo de Fed Blackout**: cita el PDF oficial directamente, no inferencia por reglas. WebFetch del PDF tuvo issues de extracción (binary), pero WebSearch independiente confirma exactamente las fechas.
-- **Issue #11 manejo de timezone**: TODAS las conversiones JST/ART se verifican con `zoneinfo` y coinciden. No hay errores de DST.
-- **Issue #17 manejo de probabilidades**: la separación 筆者推定 vs reportaje fáctico está modelada en línea 287.
-
-El único finding MEDIUM es estructural (archivo previous-week ausente), no de calidad de contenido. **No requiere auto-fix**.
-
-**Veredicto Final**: **PASS WITH NOTES** — el blog está apto para publicar sin modificaciones. Las notas son informativas para mejora continua del proceso.
+- CPI / PPI / Retail Sales / AMAT / CSCO / Barr / Powell — todos cubiertos en tabla y chequeo nocturno OK
+- Fed Blackout junio próxima — cubierto OK
+- Hormuz ceasefire frágil — cubierto en escenario Caution trigger OK
 
 ---
 
-*Review completado: 10 de mayo de 2026 (domingo) por strategy-reviewer en modo iterativo (2/3 rounds — Round 3 no requerido).*
-*Verificaciones independientes: BLS CPI/PPI, Census Retail, Cisco IR, AMAT IR, Fed May 2026 Calendar, Fed Blackout PDF, zoneinfo JST/ART conversion.*
-*Findings: 0 HIGH / 1 MEDIUM / 2 LOW (todos no-bloqueantes).*
+## Recomendaciones para futuras iteraciones
+
+1. **Actualizar `us-market-analysis.md`** para reflejar el universo Russell 3000 actualizado (no el S&P 500 legacy) — este report quedó desactualizado tras el re-baseline. NO afecta el blog actual pero podría confundir lectores cruzados.
+2. **Auto-test de sumas allocation** en el writer: agregar verificación post-generation que cada escenario sume 100% (este review detectó el 98% manualmente; un linter automático lo capturaría antes).
+3. **Cálculo automatizado de "cambio total absoluto"**: el writer podría calcular `sum(abs(this_week - last_week))` programáticamente en lugar de stating manualmente.
+
+---
+
+## Verdict matrix
+
+| Round | Findings encontrados | Findings fixed | New regressions |
+|-------|---------------------|---------------|----------------|
+| 1 | 2 HIGH + 1 Medium + 2 Low | 2 HIGH auto-fixed | 0 |
+| 2 | 0 nuevos (verify only) | n/a | 0 |
+| 3 | 0 nuevos (final full review) | n/a | 0 |
+
+**Veredicto final**: **PASS WITH NOTES**
+
+- 0 findings HIGH severity remaining (los 2 detectados se corrigieron automáticamente en Round 1)
+- 1 nota MEDIUM (discrepancia universe entre report secundario y blog — blog correcto)
+- 2 sugerencias LOW (opcionales)
+
+**Recomendación**: el blog **está listo para publicación** post-fix Round 1. Las invariantes matemáticas y de fuente de datos están todas verificadas. Las notas Medium/Low son contextuales y no bloquean la publicación.
+
+---
+
+## Reviewer notes finales
+
+El re-baseline de este blog representa una mejora **material** vs el borrador previo del 5/9 (que ancló a un baseline "fresh-start" inventado 44/20/16/25, ~16pt off del publicado real 28/19/17/36). El cambio actual:
+
+- Anchor real respetado (28/19/17/36)
+- Asignación 27/21/17/35 con cambio absoluto 4pt (bien dentro de regla ±10-15pt)
+- CSV local Russell 3000 actualizado al 5/8 (mismo día que precios) → sin lag de datos
+- Eventos macro y earnings con fuentes oficiales y JST/ART correctos
+- Disclaimer + freshness disclosure cumplidos
+
+Los 2 errores HIGH detectados (Risk-On scenario sumaba 98% y "6pt vs 4pt") son **errores aritméticos puros** del writer, no de juicio de mercado o de fuente de datos. El auto-fix los resolvió sin alterar la narrativa ni el régimen del blog.
+
+El blog en su forma actual (post-fix) es **publicable con confianza**.
+
+---
+
+*Revisión preparada: 10 de mayo de 2026 por strategy-reviewer.*
+*Inputs: blog 2026-05-10-weekly-strategy.md (post auto-fix) + reports/2026-05-10/ + CSV local Russell 3000 + previous week blog 2026-05-04 + WebSearch/WebFetch verificaciones (Fed May calendar, FOMC Blackout PDF) + zoneinfo Python para JST/ART.*
