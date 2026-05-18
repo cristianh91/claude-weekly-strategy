@@ -23,10 +23,6 @@
 ### Lot management (modelo de cartera)
 
 > **Nota**: lo que sigue es un **modelo de cartera ilustrativo**. La ejecución real (lotes, timing, instrumentos) depende de tu tolerancia al riesgo, situación fiscal y composición patrimonial. Revisar el disclaimer al final.
->
-> **Freshness**: Breadth 200MA / 8MA y Uptrend Ratio son **CSV TraderMonty al 5/14/2026 con rezago 2 días hábiles vs precios FMP 5/18** (vie 5/15 + lun 5/18). El rezago importa: entre 5/14 y 5/18 hubo subida de +12bp en el 10Y y velas de rechazo en ATH — el Uptrend Ratio real al 5/18 probablemente sea **peor** que el 35,24% reportado.
->
-> **Transparencia (corrección vs blog 5/15)**: el blog del 5/15 reportó "Breadth 200MA 54,78%" — eso era en realidad el `Breadth_Index_Raw` (valor diario crudo) del CSV, no la columna `Breadth_Index_200MA`. El valor correcto al 5/14 es **57,39%** (esta semana). El "+2,61pt aparente" es una **corrección de lectura del CSV**, no movimiento real de mercado. El Breadth raw siguió cayendo (54,78% → 53,91% promedio últimas sesiones); el 200MA por construcción se mueve lento.
 
 **Fase actual**: **Caution confirmada y profundizándose**. Bubble Score 7/15 sostenido (Risk Budget 70-80%). **5 de 6 criterios marcan Caution o peor**: VIX 18,67 (a 1,33 puntos de Caution 20), US10Y 4,590% en RED LINE (cruzó al Stress puntual), Breadth 200MA 57,39% **Border con dead cross 8MA<200MA confirmado el 5/13** (CSV), Uptrend Ratio **35,24% RED-DOWN slope -0,376** (11 sesiones DOWN), 8 de 11 sectores con uptrend interno DOWN. Solo el VIX <20 estricto mantiene la superficie en Risk-On nominal. **El switch operativo a Stress declarado se gatilla con**: VIX cierre semanal >20 **o** US10Y cierre semanal >4,60%.
 
